@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 type Medicine = {
   id: number; // お薬の識別番号
   name: string; // お薬の名前（例："〇〇頭痛薬"）
-  category: string; // お薬の種類・分類（例："解熱鎮痛薬"）
+  category: string | null; // お薬の種類・分類（例："解熱鎮痛薬"）
   symptoms: string[]; // 効く症状のリスト（例：["頭痛", "熱"]）
 };
 
@@ -87,7 +87,7 @@ export default function MedicineList() {
       {/* エラーメッセージの表示場所 */}
       <p>{errorBox}</p>
 
-      
+
       {isLoading && <p>検索中...</p>}
 
       {/* 検索結果が0件のときだけ表示 */}
@@ -100,7 +100,9 @@ export default function MedicineList() {
       <ul>
         {medicines.map((medicine: Medicine) => (
           <li key={medicine.id}>
-            {medicine.name} ({medicine.category}) {medicine.symptoms.join("、")}
+            {medicine.name} &nbsp;
+            {medicine.category && <span>({medicine.category})&nbsp;</span>} 
+            {medicine.symptoms.join("、")}
           </li>
         ))}
       </ul>
