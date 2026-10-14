@@ -27,6 +27,8 @@ export default function MedicineList() {
   // 画面読み込み時点
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // 打ち終わったあとの言葉で fetch する
+  const [debouncedSymptom, setDebouncedSymptom] = useState<string>("");
 
   // ── 2. 文字入力欄の監視係 ──
   // ユーザーが検索欄に文字を入力するたびに呼び出されて、文字の箱（symptom）を新しく書き換えます
@@ -41,7 +43,7 @@ export default function MedicineList() {
 
     setIsLoading(true);
     // 指定した症状（symptom）に合うお薬をサーバーに注文する（fetch）
-    fetch(`http://localhost:3000/medicines?symptom=${symptom.trim()}`)
+    fetch(`http://localhost:3000/medicines?symptom=${debouncedSymptom.trim()}`)
       .then((response) => {
         // サーバーから失敗の返事（500など）が来たらエラーにする
         if (!response.ok) {
@@ -65,7 +67,22 @@ export default function MedicineList() {
         setError(`薬の情報を取得できませんでした`);
         console.error(error); // パソコンの画面裏（コンソール）にも記録を残す
       });
-  }, [symptom]); // ← 「symptom（検索文字）」が書き換わるたびに、この注文係がもう一度自動で動くよ！
+  }, [debouncedSymptom]); // ← 「symptom（検索文字）」が書き換わるたびに、この注文係がもう一度自動で動くよ！
+
+
+  useEffect(() => {
+
+    // 1. タイマーで予約して、予約番号を変数に入れる
+    // 1秒（1000ミリ秒）後に実行
+    const reservationNumber = setTimeout(() => {
+      setDebouncedSymptom(symptom);
+    }, 1000);
+
+    // 2. 片付け係を return する（中身: その予約番号の予約を取り消す）
+        return () => {
+      clearTimeout(reservationNumber);
+    }
+  }, [symptom]);
 
 
   // ── 4. 画面（HTML）の見た目をつくる部分 ──
@@ -101,7 +118,7 @@ export default function MedicineList() {
         {medicines.map((medicine: Medicine) => (
           <li key={medicine.id}>
             {medicine.name} &nbsp;
-            {medicine.category && <span>({medicine.category})&nbsp;</span>} 
+            {medicine.category && <span>({medicine.category})&nbsp;</span>}
             {medicine.symptoms.join("、")}
           </li>
         ))}
