@@ -67,7 +67,7 @@ export default function MedicineList() {
         setError(`薬の情報を取得できませんでした`);
         console.error(error); // パソコンの画面裏（コンソール）にも記録を残す
       });
-  }, [debouncedSymptom]); // ← 「symptom（検索文字）」が書き換わるたびに、この注文係がもう一度自動で動くよ！
+  }, [debouncedSymptom]); // ← 打ち終わった文字（debouncedSymptom）が変わるたびに
 
 
   useEffect(() => {
