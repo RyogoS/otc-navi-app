@@ -12,6 +12,9 @@ type Medicine = {
   symptoms: string[]; // 効く症状のリスト（例：["頭痛", "熱"]）
 };
 
+const symptomsList: string[] = ["頭痛", "発熱", "生理痛", "便秘", "下痢"];
+
+
 export default function MedicineList() {
   // ── 1. データをしまっておく3つの魔法の箱（state） ──
 
@@ -79,7 +82,7 @@ export default function MedicineList() {
     }, 1000);
 
     // 2. 片付け係を return する（中身: その予約番号の予約を取り消す）
-        return () => {
+    return () => {
       clearTimeout(reservationNumber);
     }
   }, [symptom]);
@@ -122,6 +125,14 @@ export default function MedicineList() {
             {medicine.symptoms.join("、")}
           </li>
         ))}
+
+        {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
+        {symptomsList.map((option: string) => (
+          <button key={option}>
+            {option}
+          </button>
+        ))}
+
       </ul>
     </div>
   );
