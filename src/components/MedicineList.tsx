@@ -93,6 +93,14 @@ export default function MedicineList() {
     <div>
       <h2>症状・成分</h2>
 
+      {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
+      {symptomsList.map((option: string) => (
+        <button key={option} onClick={() => setSymptom(option)}
+        style={{ backgroundColor: symptom === option ? "lightblue" : undefined }}>
+          {option}
+        </button>
+      ))}
+
       {/* 検索用の入力欄 */}
       <input
         type="text"
@@ -106,7 +114,6 @@ export default function MedicineList() {
 
       {/* エラーメッセージの表示場所 */}
       <p>{errorBox}</p>
-
 
       {isLoading && <p>検索中...</p>}
 
@@ -125,14 +132,6 @@ export default function MedicineList() {
             {medicine.symptoms.join("、")}
           </li>
         ))}
-
-        {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
-        {symptomsList.map((option: string) => (
-          <button  key={option} onClick={() => setSymptom(option) }>
-            {option}
-          </button>
-        ))}
-
       </ul>
     </div>
   );
