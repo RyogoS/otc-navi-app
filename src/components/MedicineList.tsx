@@ -95,7 +95,10 @@ export default function MedicineList() {
 
       {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
       {symptomsList.map((option: string) => (
-        <button key={option} onClick={() => setSymptom(option)}
+        <button key={option} onClick={() => {
+          setSymptom(option);
+          setDebouncedSymptom(option);
+        }}
         style={{ backgroundColor: symptom === option ? "lightblue" : undefined }}>
           {option}
         </button>
