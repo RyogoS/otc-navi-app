@@ -39,6 +39,12 @@ export default function MedicineList() {
     setSymptom(e.target.value); // 入力された最新の文字を保存！
   };
 
+  // 選択症状を解除するクリアボタン
+  const clearSelection = () =>{
+    setDebouncedSymptom("");
+    setSymptom("");
+  }
+
 
   // ── 3. お薬データの注文係（useEffect） ──
   // 検索欄の文字（symptom）が変わるたびに、バックエンド（サーバー）にお薬データを貰いに行くよ！
@@ -91,7 +97,7 @@ export default function MedicineList() {
   // ── 4. 画面（HTML）の見た目をつくる部分 ──
   return (
     <div>
-      <h2>症状・成分</h2>
+      <h2>症状</h2>
 
       {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
       {symptomsList.map((option: string) => (
@@ -99,21 +105,23 @@ export default function MedicineList() {
           setSymptom(option);
           setDebouncedSymptom(option);
         }}
-        style={{ backgroundColor: symptom === option ? "lightblue" : undefined }}>
+          style={{ backgroundColor: symptom === option ? "lightblue" : undefined }}>
           {option}
         </button>
       ))}
+
+      {/* 選択症状を解除するクリアボタン */}
+      <button onClick={clearSelection}>
+        クリア
+      </button>
 
       {/* 検索用の入力欄 */}
       <input
         type="text"
         value={symptom}
         onChange={handleChange}
-        placeholder="ここに入力"
+        placeholder="その他の症状"
       />
-
-      {/* 入力された文字のリアルタイム確認用 */}
-      <p>入力内容: {symptom}</p>
 
       {/* エラーメッセージの表示場所 */}
       <p>{errorBox}</p>
