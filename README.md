@@ -1,32 +1,51 @@
-# React + TypeScript + Vite
+# otc-navi
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+症状から市販薬（OTC医薬品）を探せるWebアプリです。
 
-Currently, two official plugins are available:
+> ⚠️ **本アプリはプログラミング学習用のデモです。**
+> 情報が最新・正確とは限りません。実際に薬を選ぶ・使うときは、医師・薬剤師・登録販売者に相談してください。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 作成理由
 
-## React Compiler
+ドラッグストアの店頭で、数多くのOTC医薬品の中から「自分の症状に合う薬」を選べずに迷っているお客様を多く見かけました。
+そこで、ドラッグストア勤務の経験を活かして、症状から薬の候補をすぐに見つけられるアプリを作りました。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 使い方
 
-## Expanding the Oxlint configuration
+1. 症状ボタン（頭痛・発熱など）を押す、または「その他の症状」に入力する
+2. 症状に合う市販薬が表示される
+3. 「クリア」ボタンで、選んだ症状と入力を消せる
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 使用技術
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+| 分類 | 技術 | 選んだ理由 |
+|---|---|---|
+| フロントエンド | React | 画面を部品（コンポーネント）に分けて作れる |
+| | TypeScript | 型があるので、データの扱いの間違いを実行前に教えてくれる |
+| バックエンド | Nest.js | Controller と Service に役割が分かれていて、Java の開発経験と考え方が近い |
+| データベース | Supabase | 無料で始められて、画面からテーブルを作れる |
+| 構成 | フロントとバックを分離 | データベースの鍵をバックエンドだけに持たせるため。画面とデータ処理の役割を分ける、今の開発の形を経験するため |
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## 工夫した点
+
+- 入力のたびに通信が発生していたのを、デバウンスで減らした（「便秘」入力時 59回 → 1回）
+- エラー・検索結果0件・読み込み中の表示を用意した
+- CORS の許可先を、このアプリの画面（`localhost:5173`）だけに絞った
+
+## 動かし方（開発者向け）
+
+フロントエンド（このリポジトリ）とバックエンド（`otc-navi-api`）の両方を起動します。
+バックエンドの `.env` に、Supabase の接続情報（`SUPABASE_URL`・`SUPABASE_KEY`）の設定が必要です。
+
+| 何を | どこで | コマンド | URL |
+|---|---|---|---|
+| バックエンド | `otc-navi-api` | `npm install` → `npm run start:dev` | http://localhost:3000 |
+| フロントエンド | `otc-navi-app` | `npm install` → `npm run dev` | http://localhost:5173 |
+
+## 設計資料
+
+| 資料 | 内容 |
+|---|---|
+| [API仕様書](docs/api-spec.md) | エンドポイント、リクエストとレスポンスの形 |
+| [データベース設計書](docs/database-design.md) | ER図、テーブル定義、設計で決めたこと |
+| [テスト仕様書](docs/test-spec.md) | 正常系・異常系のテストケースと結果 |
