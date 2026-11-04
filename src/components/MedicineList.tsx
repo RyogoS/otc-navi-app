@@ -12,8 +12,27 @@ type Medicine = {
   symptoms: string[]; // 効く症状のリスト（例：["頭痛", "熱"]）
 };
 
+// 症状ボタンのカテゴリ1つ分（カテゴリ名と、その中の症状）
+type SymptomCategory = {
+  category: string; // カテゴリボタンに出す名前（DBの category とは別物。例："外用鎮痛消炎薬"）
+  symptoms: string[];  // 症状ボタン（例：["腰痛","肩こり"]）
+}
+
+// あとで消す
 const symptomsList: string[] = ["頭痛", "発熱", "生理痛", "便秘", "下痢"];
 
+// カテゴリボタン・症状ボタンに使うデータ
+// ⚠️ 症状の文字は DB の symptoms と完全一致でないと検索されない（"痒み"などの表記ゆれに注意）
+const categoryList: SymptomCategory[] = [
+  { category: "外用鎮痛消炎薬", symptoms: ["腰痛", "肩こり", "筋肉痛", "関節痛"] },
+  { category: "解熱鎮痛薬", symptoms: ["頭痛", "発熱", "生理痛", "歯痛"] },
+  { category: "かぜ薬", symptoms: ["発熱", "頭痛", "のどの痛み", "せき", "たん", "鼻水", "鼻づまり", "くしゃみ", "悪寒"] },
+  { category: "下痢・便秘薬", symptoms: ["下痢", "便秘"] },
+  { category: "胃腸薬", symptoms: ["胃もたれ", "胸やけ", "食べすぎ", "胃痛", "腹痛"] },
+  { category: "塗り薬", symptoms: ["かゆみ", "虫さされ", "湿疹", "かぶれ", "じんましん", "水虫", "いんきんたむし"] },
+  { category: "アレルギー用薬", symptoms: ["花粉症", "じんましん", "湿疹", "かゆみ", "鼻水", "くしゃみ"] },
+  { category: "目薬", symptoms: ["花粉症", "目のかゆみ", "目の充血", "目の疲れ", "目のかすみ", "ものもらい", "結膜炎"] }
+];
 
 export default function MedicineList() {
   // ── 1. データをしまっておく3つの魔法の箱（state） ──
@@ -40,7 +59,7 @@ export default function MedicineList() {
   };
 
   // 選択症状を解除するクリアボタン
-  const clearSelection = () =>{
+  const clearSelection = () => {
     setDebouncedSymptom("");
     setSymptom("");
   }
