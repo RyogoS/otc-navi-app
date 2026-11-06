@@ -129,6 +129,13 @@ export default function MedicineList() {
         </button>
       ))}
 
+      {/* カテゴリボタンを1つずつ順番に並べて表示する（map処理） */}
+      {categoryList.map((oneCategory: SymptomCategory) => (
+        <button key={oneCategory.category}>
+          {oneCategory.category}
+        </button>
+      ))}
+
       {/* 選択症状を解除するクリアボタン */}
       <button onClick={clearSelection}>
         クリア
