@@ -37,13 +37,16 @@ const categoryList: SymptomCategory[] = [
 export default function MedicineList() {
   // ── 1. データをしまっておく3つの魔法の箱（state） ──
 
-  // ① お薬の一覧データを入れる箱（最初は空っぽ [] からスタート）
+  // お薬の一覧データを入れる箱（最初は空っぽ [] からスタート）
   const [medicines, setMedicines] = useState<Medicine[]>([]);
 
-  // ② 検索欄に入力された文字（症状）を入れる箱（最初は文字なし "" からスタート）
+  // 検索欄に入力された文字（症状）を入れる箱（最初は文字なし "" からスタート）
   const [symptom, setSymptom] = useState<string>("");
 
-  // ③ 通信トラブルが起きた時のエラーメッセージを入れる箱
+  // 選択されたカテゴリを入れる箱
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  // 通信トラブルが起きた時のエラーメッセージを入れる箱
   const [errorBox, setError] = useState<string>("");
 
   // 画面読み込み時点
@@ -131,7 +134,10 @@ export default function MedicineList() {
 
       {/* カテゴリボタンを1つずつ順番に並べて表示する（map処理） */}
       {categoryList.map((oneCategory: SymptomCategory) => (
-        <button key={oneCategory.category}>
+        <button key={oneCategory.category} onClick={() => {
+          setSelectedCategory(oneCategory.category);
+        }}
+          style={{ backgroundColor: selectedCategory === oneCategory.category ? "lightblue" : undefined }}>
           {oneCategory.category}
         </button>
       ))}
