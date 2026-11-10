@@ -18,9 +18,6 @@ type SymptomCategory = {
   symptoms: string[];  // 症状ボタン（例：["腰痛","肩こり"]）
 }
 
-// あとで消す
-const symptomsList: string[] = ["頭痛", "発熱", "生理痛", "便秘", "下痢"];
-
 // カテゴリボタン・症状ボタンに使うデータ
 // ⚠️ 症状の文字は DB の symptoms と完全一致でないと検索されない（"痒み"などの表記ゆれに注意）
 const categoryList: SymptomCategory[] = [
@@ -67,6 +64,8 @@ export default function MedicineList() {
     setSymptom("");
   }
 
+  // 選択されたカテゴリのデータを探す
+  const selectedData = categoryList.find((oneCategory) => oneCategory.category === selectedCategory);
 
   // ── 3. お薬データの注文係（useEffect） ──
   // 検索欄の文字（symptom）が変わるたびに、バックエンド（サーバー）にお薬データを貰いに行くよ！
@@ -121,17 +120,6 @@ export default function MedicineList() {
     <div>
       <h2>症状</h2>
 
-      {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
-      {symptomsList.map((option: string) => (
-        <button key={option} onClick={() => {
-          setSymptom(option);
-          setDebouncedSymptom(option);
-        }}
-          style={{ backgroundColor: symptom === option ? "lightblue" : undefined }}>
-          {option}
-        </button>
-      ))}
-
       {/* カテゴリボタンを1つずつ順番に並べて表示する（map処理） */}
       {categoryList.map((oneCategory: SymptomCategory) => (
         <button key={oneCategory.category} onClick={() => {
@@ -139,6 +127,17 @@ export default function MedicineList() {
         }}
           style={{ backgroundColor: selectedCategory === oneCategory.category ? "lightblue" : undefined }}>
           {oneCategory.category}
+        </button>
+      ))}
+
+      {/* 症状ボタンを1つずつ順番に並べて表示する（map処理） */}
+      {selectedData && selectedData.symptoms.map((option: string) => (
+        <button key={option} onClick={() => {
+          setSymptom(option);
+          setDebouncedSymptom(option);
+        }}
+          style={{ backgroundColor: symptom === option ? "lightblue" : undefined }}>
+          {option}
         </button>
       ))}
 
