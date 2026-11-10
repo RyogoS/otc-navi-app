@@ -24,7 +24,7 @@ const categoryList: SymptomCategory[] = [
   { category: "外用鎮痛消炎薬", symptoms: ["腰痛", "肩こり", "筋肉痛", "関節痛"] },
   { category: "解熱鎮痛薬", symptoms: ["頭痛", "発熱", "生理痛", "歯痛"] },
   { category: "かぜ薬", symptoms: ["発熱", "頭痛", "のどの痛み", "せき", "たん", "鼻水", "鼻づまり", "くしゃみ", "悪寒"] },
-  { category: "下痢・便秘薬", symptoms: ["下痢", "便秘", "整腸"] },
+  { category: "下痢・便秘薬", symptoms: ["下痢", "便秘"] },
   { category: "胃腸薬", symptoms: ["胃もたれ", "胸やけ", "食べすぎ", "胃痛", "腹痛"] },
   { category: "塗り薬", symptoms: ["かゆみ", "虫さされ", "湿疹", "かぶれ", "じんましん", "水虫", "いんきんたむし"] },
   { category: "アレルギー用薬", symptoms: ["花粉症", "じんましん", "湿疹", "かゆみ", "鼻水", "くしゃみ"] },
@@ -124,6 +124,7 @@ export default function MedicineList() {
       {/* カテゴリボタンを1つずつ順番に並べて表示する（map処理） */}
       {categoryList.map((oneCategory: SymptomCategory) => (
         <button key={oneCategory.category} onClick={() => {
+          clearSelection();
           setSelectedCategory(oneCategory.category);
         }}
           style={{ backgroundColor: selectedCategory === oneCategory.category ? "lightblue" : undefined }}>
